@@ -1,0 +1,17 @@
+<gradleEnterprise>
+  <server>
+    <url>https://events.gradle.com/</url>
+  </server>
+  <buildScan>
+    <backgroundBuildScanUpload>#{isFalse(env['GITHUB_ACTIONS'])}</backgroundBuildScanUpload>
+  </buildScan>
+  <buildCache>
+    <local>
+      <enabled>#{isFalse(env['GITHUB_ACTIONS'])}</enabled>
+    </local>
+    <remote>
+      <enabled>true</enabled>
+      <storeEnabled>true</storeEnabled>
+    </remote>
+  </buildCache>
+</gradleEnterprise>
