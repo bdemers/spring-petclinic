@@ -35,12 +35,12 @@ jobs:
 
       - name: Publish build scans link
         # Don't publish link to scans on forks, they don't have an access key
-        if: ${{ !(github.event.pull_request && github.event.pull_request.head.repo.fork) }}
+        if: github.event.pull_request.head.repo.full_name == github.repository && !cancelled()
         # The `CI run` custom value is automatically created by the common-custom-user-data-maven-extension, defined by .mvn/extensions.xml
         run: echo "::notice title=Build scans for workflow::https://events.gradle.com/scans?search.names=CI%20run&search.values=$GITHUB_RUN_ID"
 
       - name: Add Comment to Pull Request
-        if: (github.event_name == 'pull_request')
+        if: github.event_name == 'pull_request' && !cancelled()
         uses: actions/github-script@v6
         with:
           script: | 
