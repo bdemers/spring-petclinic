@@ -16,7 +16,9 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-
+    permissions:
+      contents: read
+      issues: write
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{matrix.java}}
@@ -40,7 +42,6 @@ jobs:
         if: github.event_name == 'pull_request'
         uses: actions/github-script@v5
         with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
           script: | 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
