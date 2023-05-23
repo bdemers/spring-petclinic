@@ -16,7 +16,10 @@ jobs:
     strategy:
       matrix:
         java: [ '17' ]
-
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK ${{matrix.java}}
@@ -30,3 +33,20 @@ jobs:
         env:
           GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GE_ACCESS_TOKEN }}
 
+      - name: Add BuildScan link to summary
+        # Don't publish link to scans on forks, they don't have an access key
+        if: github.event.pull_request.head.repo.full_name == github.repository && !cancelled()
+        # The `CI run` custom value is automatically created by the common-custom-user-data-maven-extension, defined by .mvn/extensions.xml
+        run: echo "🐘[Gradle Enterprise BuildScan](https://events.gradle.com/scans?search.names=CI%20run&search.values=$GITHUB_RUN_ID)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Add Comment to Pull Request
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && !cancelled()
+        uses: actions/github-script@v6
+        with:
+          script: | 
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `[Gradle Enterprise BuildScan](https://events.gradle.com/scans?search.names=CI%20run&search.values=${context.runId}) for [build #${context.runId}](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`
+            })
