@@ -48,5 +48,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `[BuildScan](https://events.gradle.com/scans?search.names=CI%20run&search.values=${context.runId}) for [workflow #${context.workflow} ${{GITHUB_WORKFLOW}}]`
+              body: `[BuildScan](https://events.gradle.com/scans?search.names=CI%20run&search.values=${context.runId}) for [workflow #${context.workflow} ${{ github.workflow }}]`
             })
