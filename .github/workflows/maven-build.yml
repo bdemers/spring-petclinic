@@ -30,3 +30,9 @@ jobs:
         env:
           GRADLE_ENTERPRISE_ACCESS_KEY: ${{ secrets.GE_ACCESS_TOKEN }}
 
+      - name: Publish build scans link
+        # Don't publish link to scans on forks, they don't have an access key
+        if: ${{ !(github.event.pull_request && github.event.pull_request.head.repo.fork) }}
+        # The `CI run` custom value is automatically created by the common-custom-user-data-maven-extension, defined by .mvn/extensions.xml
+        run: echo "::notice title=Build scans for workflow::https://ge.bdemers.io/scans?search.names=CI%20run&search.values=$GITHUB_RUN_ID"
+

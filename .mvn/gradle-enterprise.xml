@@ -1,7 +1,7 @@
 <gradleEnterprise>
 	<server>
 		<!-- Your Gradle Enterprise URL -->
-		<url>https://ge.bdemers.io</url>
+		<url>https://events.gradle.com</url>
 	</server>
 	<buildScan>
 		<capture>
