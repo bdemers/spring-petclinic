@@ -40,7 +40,7 @@ jobs:
         run: echo "::notice title=Build scans for workflow::https://events.gradle.com/scans?search.names=CI%20run&search.values=$GITHUB_RUN_ID"
 
       - name: Add Comment to Pull Request
-        if: github.event_name == 'pull_request'
+        if: '!cancelled() && github.event_name == "pull_request"'
         uses: actions/github-script@v6
         with:
           script: | 
@@ -48,5 +48,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `[BuildScans for workflow](https://events.gradle.com/scans?search.names=CI%20run&search.values=${context.runId})`
+              body: `[BuildScan](https://events.gradle.com/scans?search.names=CI%20run&search.values=${context.runId}) for [workflow #${context.workflow} ${{GITHUB_WORKFLOW}}]`
             })
