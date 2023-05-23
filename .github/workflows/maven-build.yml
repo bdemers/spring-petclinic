@@ -40,7 +40,7 @@ jobs:
 
       - name: Add Comment to Pull Request
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         with:
           script: | 
             github.rest.issues.createComment({
