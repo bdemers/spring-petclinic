@@ -37,13 +37,13 @@ jobs:
         # Don't publish link to scans on forks, they don't have an access key
         if: github.event.pull_request.head.repo.full_name == github.repository && !cancelled()
         # The `CI run` custom value is automatically created by the common-custom-user-data-maven-extension, defined by .mvn/extensions.xml
-        run: echo "🐘[Gradle Enterprise BuildScan](https://events.gradle.com/scans?search.names=CI%20run&search.values=$GITHUB_RUN_ID) >> $GITHUB_STEP_SUMMARY"
+        run: echo "::notice title=Gradle Enterprise BuildScan::https://events.gradle.com/scans?search.names=CI%20run&search.values=$GITHUB_RUN_ID"
 
       - name: Publish build scans link - Summary
         # Don't publish link to scans on forks, they don't have an access key
         if: github.event.pull_request.head.repo.full_name == github.repository && !cancelled()
         # The `CI run` custom value is automatically created by the common-custom-user-data-maven-extension, defined by .mvn/extensions.xml
-        run: echo "::notice title=Gradle Enterprise BuildScan::https://events.gradle.com/scans?search.names=CI%20run&search.values=$GITHUB_RUN_ID"
+        run: echo "🐘[Gradle Enterprise BuildScan](https://events.gradle.com/scans?search.names=CI%20run&search.values=$GITHUB_RUN_ID)" >> $GITHUB_STEP_SUMMARY
 
       - name: Add Comment to Pull Request
         if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository && !cancelled()
